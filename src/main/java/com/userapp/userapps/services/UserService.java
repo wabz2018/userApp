@@ -31,18 +31,18 @@ public class UserService {
         response = new UserResponse();
         Users username = userrepos.findByUsername(userRequest.getUsername());
         Users password = userrepos.findByPassword(userRequest.getPassword());
-        response.setHttpStatus(HttpStatus.OK);
+        //response.setHttpStatus(HttpStatus.OK);
         response.setMessage("Invalid login credentials");
         response.setRequestStatus(Boolean.FALSE);
         response.setToken(null);
 
         if (username != null && password != null) {
-            response.setHttpStatus(HttpStatus.OK);
+          //  response.setHttpStatus(HttpStatus.OK);
             response.setMessage("Successfully Logged in");
             response.setRequestStatus(Boolean.TRUE);
             response.setToken("iuyiuuoluootrtrtiwyqio1152628272181719367192hj,hdqjw");
         } else {
-            response.setHttpStatus(HttpStatus.OK);
+         //   response.setHttpStatus(HttpStatus.OK);
             response.setMessage("Invalid login credentials");
             response.setRequestStatus(Boolean.TRUE);
             response.setToken(null);

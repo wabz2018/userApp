@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 public class UserResponse {
 
     String message, token;
-    HttpStatus httpStatus;
+   
     Boolean requestStatus;
 
     public String getMessage() {
@@ -33,13 +33,8 @@ public class UserResponse {
         this.token = token;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
-    }
+   
+  
 
     public Boolean getRequestStatus() {
         return requestStatus;
