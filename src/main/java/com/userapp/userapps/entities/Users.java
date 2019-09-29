@@ -33,8 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")
     , @NamedQuery(name = "Users.findByFirstname", query = "SELECT u FROM Users u WHERE u.firstname = :firstname")
     , @NamedQuery(name = "Users.findByLastname", query = "SELECT u FROM Users u WHERE u.lastname = :lastname")
+    , @NamedQuery(name = "Users.findByToken", query = "SELECT u FROM Users u WHERE u.token = :token")
     , @NamedQuery(name = "Users.findByIsloggedIn", query = "SELECT u FROM Users u WHERE u.isloggedIn = :isloggedIn")
-    , @NamedQuery(name = "Users.findByToken", query = "SELECT u FROM Users u WHERE u.token = :token")})
+    , @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,11 +60,15 @@ public class Users implements Serializable {
     @Size(max = 20)
     @Column(name = "lastname")
     private String lastname;
-    @Column(name = "IsloggedIn")
-    private Boolean isloggedIn;
     @Size(max = 100)
     @Column(name = "token")
     private String token;
+    @Column(name = "islogged_in")
+    private Boolean isloggedIn;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 255)
+    @Column(name = "email")
+    private String email;
 
     public Users() {
     }
@@ -118,6 +123,14 @@ public class Users implements Serializable {
         this.lastname = lastname;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public Boolean getIsloggedIn() {
         return isloggedIn;
     }
@@ -126,12 +139,12 @@ public class Users implements Serializable {
         this.isloggedIn = isloggedIn;
     }
 
-    public String getToken() {
-        return token;
+    public String getEmail() {
+        return email;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

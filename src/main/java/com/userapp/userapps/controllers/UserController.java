@@ -36,15 +36,38 @@ public class UserController {
     UserService service;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "Login users",notes = "Login users")
+    @ApiOperation(value = "Login users", notes = "Login users")
 
     public UserResponseController loginController(@RequestBody UserRequest userRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         return new UserResponseController(service.userLogin(userRequest), HttpStatus.OK);
     }
-       @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "Add users",notes = "Add users")
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "Add users", notes = "Add users")
 
     public GeneralResponseController register(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         return new GeneralResponseController(service.register(generalRequest), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/listusers", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "List users", notes = "List users")
+
+    public GeneralResponseController listUsers(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.findAllUsers(generalRequest), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/listuserbyemail", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "Email user", notes = "listuser by email ")
+
+    public GeneralResponseController listuserbyemail(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.findByEmail(generalRequest), HttpStatus.OK);
+    }
+    
+    
+ @RequestMapping(value = "/deleteuser", method = RequestMethod.DELETE, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "delete user", notes = "delete user  ")
+
+    public GeneralResponseController deleteUser(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.deleteUser(generalRequest), HttpStatus.OK);
     }
 }

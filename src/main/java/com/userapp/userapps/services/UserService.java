@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.userapp.userapps.services;
 
 import com.userapp.userapps.entities.Users;
@@ -11,6 +6,9 @@ import com.userapp.userapps.utils.GeneralRequest;
 import com.userapp.userapps.utils.GeneralRespose;
 import com.userapp.userapps.utils.UserRequest;
 import com.userapp.userapps.utils.UserResponse;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     UserResponse response;
 
@@ -37,12 +37,13 @@ public class UserService {
         response.setToken(null);
 
         if (username != null && password != null) {
-          //  response.setHttpStatus(HttpStatus.OK);
+            //  response.setHttpStatus(HttpStatus.OK);
             response.setMessage("Successfully Logged in");
             response.setRequestStatus(Boolean.TRUE);
-            response.setToken("iuyiuuoluootrtrtiwyqio1152628272181719367192hj,hdqjw");
+            // response.setToken("iuyiuuoluootrtrtiwyqio1152628272181719367192hj,hdqjw");
+            response.setToken(CreateToken(username).toString());
         } else {
-         //   response.setHttpStatus(HttpStatus.OK);
+            //   response.setHttpStatus(HttpStatus.OK);
             response.setMessage("Invalid login credentials");
             response.setRequestStatus(Boolean.TRUE);
             response.setToken(null);
@@ -63,7 +64,9 @@ public class UserService {
             users.setFirstname(generalRequest.getObject().getFirstname());
             users.setLastname(generalRequest.getObject().getLastname());
             users.setUsername(generalRequest.getObject().getUsername());
+            users.setPassword(generalRequest.getObject().getPassword());
             users.setToken(generalRequest.getObject().getToken());
+            users.setEmail(generalRequest.getObject().getEmail());
             users.setIsloggedIn(Boolean.FALSE);
             userrepos.save(users);
             respose.setHttpStatus(HttpStatus.OK);
@@ -73,11 +76,81 @@ public class UserService {
 
         } else {
             respose.setHttpStatus(HttpStatus.OK);
-            respose.setMessage("Failed");
+            respose.setMessage("Username with username " + generalRequest.getObject().getUsername() + " exists");
             respose.setPayload(null);
             respose.setStatus(true);
         }
         return respose;
     }
 
+    public String CreateToken(Users user) {
+
+        SecureRandom random = new SecureRandom();
+        byte[] bite = new byte[64];
+        random.nextBytes(bite);
+        return base64Encoder.encodeToString(bite) + user.getUsername();
+    }
+
+    public GeneralRespose findAllUsers(GeneralRequest<Users> generalRequest) {
+        GeneralRespose respose = new GeneralRespose();
+        List<Users> users = userrepos.findAll();
+        respose.setHttpStatus(HttpStatus.OK);
+        respose.setMessage("Error occurred");
+        respose.setPayload(null);
+        respose.setStatus(false);
+        if (users != null) {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Successfully listed all users");
+            respose.setPayload(users);
+            respose.setStatus(true);
+        } else {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Data not found");
+            respose.setPayload(null);
+            respose.setStatus(true);
+        }
+        return respose;
+    }
+
+    public GeneralRespose findByEmail(GeneralRequest<Users> generalRequest) {
+        GeneralRespose respose = new GeneralRespose();
+        Users email = userrepos.findByEmail(generalRequest.getObject().getEmail());
+        respose.setHttpStatus(HttpStatus.OK);
+        respose.setMessage("Error occurred");
+        respose.setPayload(null);
+        respose.setStatus(false);
+        if (email != null) {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Successfully listed user");
+            respose.setPayload(email);
+            respose.setStatus(true);
+        } else {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Data not found");
+            respose.setPayload(null);
+            respose.setStatus(true);
+        }
+        return respose;
+    }
+
+    public GeneralRespose deleteUser(GeneralRequest<Users> generalRequest) {
+        GeneralRespose respose = new GeneralRespose();
+        Users email = userrepos.findByEmail(generalRequest.getObject().getEmail());
+        respose.setHttpStatus(HttpStatus.OK);
+        respose.setMessage("Error occurred");
+        respose.setPayload(null);
+        respose.setStatus(false);
+        if (email != null) {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Successfully deleted user");
+            respose.setPayload(email);
+            respose.setStatus(true);
+        } else {
+            respose.setHttpStatus(HttpStatus.OK);
+            respose.setMessage("Data not found");
+            respose.setPayload(null);
+            respose.setStatus(true);
+        }
+        return respose;
+    }
 }

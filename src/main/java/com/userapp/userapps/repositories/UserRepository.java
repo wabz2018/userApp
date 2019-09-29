@@ -6,6 +6,8 @@
 package com.userapp.userapps.repositories;
 
 import com.userapp.userapps.entities.Users;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToOne;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.query.Param;
@@ -15,9 +17,16 @@ import org.springframework.data.repository.query.Param;
  * @author Maelo
  */
 public interface UserRepository extends JpaRepositoryImplementation<Users, Long> {
-  @Query("SELECT u FROM Users u WHERE u.username = :username")
-    Users findByUsername(@Param("username")String Username);
-   @Query("SELECT u FROM Users u WHERE u.password = :password")
-      Users findByPassword(@Param("password")String password);
-    
+
+    @Query("SELECT u FROM Users u WHERE u.username = :username")
+    Users findByUsername(@Param("username") String Username);
+
+    @Query("SELECT u FROM Users u WHERE u.password = :password")
+    Users findByPassword(@Param("password") String password);
+
+    @Query("SELECT u FROM Users u WHERE u.email = :email")
+    Users findByEmail(@Param("email") String email);
+
+//    @NamedNativeQuery(name = "deleteAll()", query = "DELETE u FROM Users u WHERE u.email = :email")
+//    Users deleteUser(@Param("email") String email);
 }
