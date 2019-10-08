@@ -27,6 +27,7 @@ public class UserService {
     @Autowired
     UserRepository userrepos;
 
+    
     public UserResponse userLogin(UserRequest userRequest) {
         response = new UserResponse();
         Users username = userrepos.findByUsername(userRequest.getUsername());
@@ -41,7 +42,10 @@ public class UserService {
             response.setMessage("Successfully Logged in");
             response.setRequestStatus(Boolean.TRUE);
             // response.setToken("iuyiuuoluootrtrtiwyqio1152628272181719367192hj,hdqjw");
-            response.setToken(CreateToken(username).toString());
+            response.setToken(CreateToken(username));
+            String t=CreateToken(username);
+            String   q="Insert into logintrains(token,username, timelogged)VALUES('"+t+"', '"+username+"', now())";
+            
         } else {
             //   response.setHttpStatus(HttpStatus.OK);
             response.setMessage("Invalid login credentials");

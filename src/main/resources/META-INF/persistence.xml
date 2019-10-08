@@ -3,6 +3,11 @@
   <persistence-unit name="com.userapp_userapps_jar_version-1PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.userapp.userapps.entities.Users</class>
+    <class>com.userapp.userapps.entities.Logintrains</class>
+    <class>com.userapp.userapps.entities.Subcription</class>
+    <class>com.userapp.userapps.entities.Subprice</class>
+    <class>com.userapp.userapps.entities.Subtypes</class>
+    <class>com.userapp.userapps.entities.Blog</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/userapp?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

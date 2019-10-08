@@ -6,8 +6,7 @@
 package com.userapp.userapps.repositories;
 
 import com.userapp.userapps.entities.Users;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.OneToOne;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.query.Param;

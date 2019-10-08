@@ -5,8 +5,6 @@
  */
 package com.userapp.userapps.utils;
 
-import org.springframework.http.HttpStatus;
-
 /**
  *
  * @author Maelo
@@ -34,8 +32,6 @@ public class UserResponse {
     }
 
    
-  
-
     public Boolean getRequestStatus() {
         return requestStatus;
     }

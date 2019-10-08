@@ -5,12 +5,11 @@
  */
 package com.userapp.userapps.controllers;
 
-import com.userapp.userapps.entities.Users;
-import com.userapp.userapps.services.UserService;
+import com.userapp.userapps.entities.Subprice;
+import com.userapp.userapps.entities.Subtypes;
+import com.userapp.userapps.services.MainService;
 import com.userapp.userapps.utils.GeneralRequest;
 import com.userapp.userapps.utils.GeneralResponseController;
-import com.userapp.userapps.utils.UserRequest;
-import com.userapp.userapps.utils.UserResponseController;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
@@ -30,44 +29,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @Api(value = "users", description = "checklogins")
-public class UserController {
+public class MainController {
 
     @Autowired
-    UserService service;
+    MainService service;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "Login users", notes = "Login users")
+    //save new plan
+    @RequestMapping(value = "/saveplan", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "Add New Plan", notes = "Add Plans")
 
-    public UserResponseController loginController(@RequestBody UserRequest userRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        return new UserResponseController(service.userLogin(userRequest), HttpStatus.OK);
+    public GeneralResponseController saveplan(@RequestBody GeneralRequest<Subtypes> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.SaveType(generalRequest), HttpStatus.OK);
+    }
+//view plans
+
+    @RequestMapping(value = "/lisplans", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "List plans", notes = "List plans")
+
+    public GeneralResponseController listplans(@RequestBody GeneralRequest<Subtypes> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.findAllTypes(generalRequest), HttpStatus.OK);
+    }
+//add price
+
+    @RequestMapping(value = "/saveprice", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "Add New Price", notes = "Add Price")
+
+    public GeneralResponseController saveprice(@RequestBody GeneralRequest<Subprice> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.SavePrice(generalRequest), HttpStatus.OK);
+    }
+//view prices
+
+    @RequestMapping(value = "/lisprices", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @ApiOperation(value = "List prices", notes = "List prices")
+
+    public GeneralResponseController listprices(@RequestBody GeneralRequest<Subprice> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        return new GeneralResponseController(service.findAllPrices(generalRequest), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "Add users", notes = "Add users")
-
-    public GeneralResponseController register(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        return new GeneralResponseController(service.register(generalRequest), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/listusers", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "List users", notes = "List users")
-
-    public GeneralResponseController listUsers(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        return new GeneralResponseController(service.findAllUsers(generalRequest), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/listuserbyemail", method = RequestMethod.GET, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "Email user", notes = "listuser by email ")
-
-    public GeneralResponseController listuserbyemail(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        return new GeneralResponseController(service.findByEmail(generalRequest), HttpStatus.OK);
-    }
-    
-    
- @RequestMapping(value = "/deleteuser", method = RequestMethod.DELETE, consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
-    @ApiOperation(value = "delete user", notes = "delete user  ")
-
-    public GeneralResponseController deleteUser(@RequestBody GeneralRequest<Users> generalRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        return new GeneralResponseController(service.deleteUser(generalRequest), HttpStatus.OK);
-    }
 }
